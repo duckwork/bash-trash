@@ -6,17 +6,12 @@ Instead of `rm`'ing files into the void, put them in your trash/recycle bin
 Installation
 ------------
 
-### bics
+Add the script `bash.trash` to your $PATH.
+I link it:
 
-Use [bics](https://github.com/bahamas10/bics) to manage this plugin
-
-After installing `bics`, install this plugin by running
-
-    bics install git://github.com/bahamas10/bash-trash.git
-
-### manual
-
-Add the code to your `~/.bashrc`
+```
+$ ln -s $PWD/trash.bash $HOME/.local/bin/trash
+```
 
 Usage
 -----
