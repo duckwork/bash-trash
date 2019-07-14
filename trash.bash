@@ -1,12 +1,26 @@
-#
+#!/usr/bin/env bash
 # Trash management for bash
 #
 # Author: Dave Eddy <dave@daveeddy.com>
-# Date: July 02, 2014
+# and Case Duckworth <acdw@acdw.net>
+# Date: 2019-07-14
 # License: MIT
 
-TRASH_DIR=~/.Trash
+TRASH_DIR=${TRASH_DIR:-$HOME/.local/trash}
 mkdir -p "$TRASH_DIR"
+
+usage() { script=$(basename $0)
+	cat <<-EOF
+	$script: move things to trash, instead of deleting them.
+	usage: $script FILES... | (-e|--empty) | (-q|--quiet) | (-h|--help)
+		FILES:		which files to trash (move to \$TRASH_DIR)
+		-e|--empty:	empty trash (rm -rf \$TRASH_DIR/*)
+		-q|--quiet:	exit 0 if trash is empty, else 1
+		-h|--help:	show this help
+	\$TRASH_DIR can be set in the environment,
+	but it defaults to ~/.local/trash.
+	EOF
+}
 
 # trash each argument, or show the state of the trash if no
 # arguments are given
@@ -50,3 +64,15 @@ _bash_trash_is_empty() {
 	)
 	return $?
 }
+
+main() {
+	case "$1" in
+		trash) shift; trash "$@" ;;
+		-e|--empty) shift; emptytrash ;;
+		-q|--quiet) exit $(_bash_trash_is_empty) ;;
+		-h|--help) usage ;;
+		*) trash "$@" ;;
+	esac
+}
+
+main "$@"
